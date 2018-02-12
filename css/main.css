@@ -1,0 +1,29 @@
+body{
+    position: absolute;
+}
+
+h1, h2 {
+    position: absolute;
+    left: 10px;
+    font-size: 1.3em;
+    font-weight: 100;
+}
+h2 {
+    top: 30px;
+    font-size: 1em;
+}
+
+
+
+/* REMOVE .incident FILL CSS */
+.hover {
+    fill: yellow;   
+}
+/* ADD CSS FOR #sliderContainer */
+#sliderContainer {
+    text-align: center;
+    position: relative;
+    width: 200px;
+    left: 300px;
+    top: 650px;
+}

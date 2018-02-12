@@ -34,10 +34,18 @@
 
 	    </section>
 		</div>
+		<div id="sliderContainer">
+				<input id="timeslide" type="range" min="0" max="3" value = "0" step ="1"/><br>
+				<span id ="range">2015</span>
+			</div>
+		
 		<script>
 				var width = 700,
 				height = 580;
-		
+				
+				var inputValue = null;
+				var year = ["2015", "2016", "2017", "2018"];
+				
 				var svg = d3.select('body')
 				.append('svg')
 				.attr('width', width)
@@ -45,15 +53,17 @@
 		
 				var g = svg.append('g');
 		
+				//set projection
 				var projection = d3.geoAlbers()
-				.scale(120000)
+				.scale(110000)
 				.rotate([122.33, 0])
 				.center([0, 47.6062])
-				.translate([width/5, height/3]);
+				.translate([width/2, height/2]);
 		
 				var geoPath = d3.geoPath()
 				.projection(projection);
 		
+				//set path
 				g.selectAll("path")
 				.data(neighborhoods_json.features)
 				.enter()
@@ -63,13 +73,12 @@
 				.attr('d', geoPath);
 			
 				
-				
+			//add data points
 			d3.csv("data/clean-data.csv", function (error, data) {
-				// change string (from CSV) into number format
+				// change into number format
 				data.forEach(function (d) {
 					d.Latitude= +d.Latitude;
 					d.Longitude = +d.Longitude;
-					//console.log(d.Latitude, d.Longitude)
 				});
 				
 				var incidents = svg.append("g");
@@ -78,26 +87,85 @@
 				.data(data)
 				.enter()
 				.append("circle")
+				.attr("fill", initialDate)
 				.attr("r", 3)
-				//.attr("transform", function(d) { return "translate(" + projection([d.Longitude, d.Latitude]) + ")"})
 				.attr("cx", function(d){ 
 					var coords = projection([d.Longitude, d.Latitude])
-					//return coords[0];
-					console.log(coords)
 					return coords[0];
 				})
 				.attr("cy", function(d){ 
 					var coords = projection([d.Longitude, d.Latitude])
 					return coords[1];
 				})
-				.attr("fill", "#900")
-				.attr("stroke" , "#999")
-				.attr("d", geoPath);
+				//.attr("fill", "#5e81fd")
+				.attr("stroke" , "#3c3c3c")
+				.attr("d", geoPath)
+				.attr("class", "incident")
+				.on("mouseover", function(d){
+					d3.select(this).attr("class","incident hover");
+				})
+				.on("mouseout", function(d){
+					d3.select("h2").text("");
+					d3.select(this).attr("class","incident");
+				});
 			});
 
+			//create slider 
+			d3.select("#timeslide").on("input", function() {
+				update(+this.value);
+			});
 
+			// update the fill of each SVG of class "incident" with value
+			function update(value) {
+				document.getElementById("range").innerHTML=year[value];
+				inputValue = year[value];
+				d3.selectAll(".incident")
+				.attr("fill", dateMatch)
+				.attr("stroke", dateMatch2);
+			}
+			
+			//match the year with the slider input
+			function dateMatch(data, value) {
+				var date = new Date(data.Date);
+				var Year = date.getFullYear();
 
+				if (inputValue == Year) {
+					this.parentElement.appendChild(this);
+					return "red";
+				} else {
+					return "none";
+				};
+			}
+
+			//remove other data points
+			function dateMatch2(data, value) {
+				var date = new Date(data.Date);
+				var Year = date.getFullYear();
+
+				if (inputValue == Year) {
+					this.parentElement.appendChild(this);
+					return "#3c3c3c";
+				} else {
+					return "none";
+				};
+			}
+
+			//initial viZ
+			function initialDate(d,i){
+				var date = new Date(d.Date);
+				var Year = date.getFullYear();
+
+				if (Year == "2015") {
+					this.parentElement.appendChild(this);
+					return "red";
+				} else {
+					return "#999";
+				};
+			}
 			</script>
+			
+			
+
 	</body>
 
 </html>
