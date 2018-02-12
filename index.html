@@ -103,15 +103,15 @@
 				// add mouse over event
 				.on("mouseover", function(d){
 
-					d3.select("p").text("Block Location: " + d["Hundred.Block.Location"] + "\n"
-						+ "Zone/Beat: " + d["Zone.Beat"] + "\n"
-					 	+ "Group Description: " + d["Event.Clearance.Description"] + "\n"
-						+ "At Scene Date: " + d["Date"] + "\n"
-						+ "At Scene Time: " + d["Time"]);
+					d3.select("p").html("<b>Block Location: </b>" + d["Hundred.Block.Location"] + "\n"
+						+ "<b>Zone/Beat: </b>" + d["Zone.Beat"] + "\n"
+					 	+ "<b>Group Description: </b>" + d["Event.Clearance.Description"] + "\n"
+						+ "<b>At Scene Date: </b>" + d["Date"] + "\n"
+						+ "<b>At Scene Time: </b>" + d["Time"]);
 					d3.select(this).attr("class","incident hover");
 				})
 				.on("mouseout", function(d){
-					d3.select("h2").text("");
+					d3.select("h2").html("");
 					d3.select(this).attr("class","incident");
 				})
 			});
