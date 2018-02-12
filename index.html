@@ -23,7 +23,8 @@
 	    <!-- main js file :) -->
 		<script src="js/index.js"></script>
 		<script src="https://d3js.org/d3.v4.js"></script>
-    <script src = "data/neighborhoods.geojson"></script>
+		<!-- Boundaries taken from https://github.com/seattleio/seattle-boundaries-data-->
+    	<script src = "data/neighborhoods.geojson"></script>
 	</head>
 
 	<body>
@@ -34,19 +35,6 @@
 	    </section>
 		</div>
 		<script>
-				d3.csv("seattle_police.csv", function (error, data) {
-		
-				// change string (from CSV) into number format
-					data.forEach(function (d) {
-						d.Latitude= +d.Latitude;
-						d.Longitude = +d.Longitude;
-					});
-					/*
-					
-					*/
-				});
-		
-		
 				var width = 700,
 				height = 580;
 		
@@ -57,24 +45,49 @@
 		
 				var g = svg.append('g');
 		
-				var albersProjection = d3.geoAlbers()
+				var projection = d3.geoAlbers()
 				.scale(120000)
 				.rotate([122.33, 0])
 				.center([0, 47.6062])
 				.translate([width/5, height/3]);
 		
 				var geoPath = d3.geoPath()
-				.projection(albersProjection);
+				.projection(projection);
 		
 				g.selectAll("path")
 				.data(neighborhoods_json.features)
 				.enter()
 				.append("path")
-				.attr('fill', '#ccc')
+				.attr('fill', 'none')
 				.attr("stroke", "#696969")
 				.attr('d', geoPath);
-		
-		
+			
+				
+				
+			d3.csv("data/clean-data.csv", function (error, data) {
+				// change string (from CSV) into number format
+				data.forEach(function (d) {
+					d.Latitude= +d.Latitude;
+					d.Longitude = +d.Longitude;
+					
+					//change to positive value
+					d.Longitude = -(d.Longitude)
+				});
+				
+				var incidents = svg.append("g");
+				
+				incidents.selectAll("circle")
+				.data(data)
+				.enter()
+				.append("circle")
+				.attr("transform", function(d) { return "translate(" + projection([d.Longitude, d.Latitude]) + ")"})
+				.attr("fill", "#900")
+				.attr("stroke" , "#999")
+				.attr("d", geoPath);
+			});
+
+
+
 			</script>
 	</body>
 
