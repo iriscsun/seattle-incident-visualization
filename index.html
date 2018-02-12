@@ -39,10 +39,12 @@
 				<span id ="range">2015</span>
 			</div>
 		
+		
 		<script>
 				var width = 700,
 				height = 580;
-				
+				var dataset;
+
 				var inputValue = null;
 				var year = ["2015", "2016", "2017", "2018"];
 				
@@ -80,7 +82,11 @@
 					d.Latitude= +d.Latitude;
 					d.Longitude = +d.Longitude;
 				});
-				
+				dataset = data
+				drawViz(dataset);
+			});
+			
+			function drawViz(data){
 				var incidents = svg.append("g");
 				
 				incidents.selectAll("path")
@@ -101,14 +107,9 @@
 				.attr("stroke" , "#3c3c3c")
 				.attr("d", geoPath)
 				.attr("class", "incident")
-				.on("mouseover", function(d){
-					d3.select(this).attr("class","incident hover");
-				})
-				.on("mouseout", function(d){
-					d3.select("h2").text("");
-					d3.select(this).attr("class","incident");
-				});
-			});
+				.on("mouseover", function(d){ d3.select(this).attr("class","incident hover");	})
+				.on("mouseout", function(d){ d3.select("h2").text("");d3.select(this).attr("class","incident");	});
+			}
 
 			//create slider 
 			d3.select("#timeslide").on("input", function() {
@@ -131,7 +132,7 @@
 
 				if (inputValue == Year) {
 					this.parentElement.appendChild(this);
-					return "red";
+					return "#5e81fd";
 				} else {
 					return "none";
 				};
@@ -157,7 +158,7 @@
 
 				if (Year == "2015") {
 					this.parentElement.appendChild(this);
-					return "red";
+					return "#5e81fd";
 				} else {
 					return "#999";
 				};
