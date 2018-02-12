@@ -13,7 +13,13 @@ h2 {
     font-size: 1em;
 }
 
+p {
+	white-space: pre;
+}
 
+#info {
+	height: 115px;
+}
 
 /* REMOVE .incident FILL CSS */
 .hover {
@@ -27,3 +33,4 @@ h2 {
     left: 300px;
     top: 650px;
 }
+

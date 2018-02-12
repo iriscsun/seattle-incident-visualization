@@ -29,11 +29,16 @@
 
 	<body>
 		<div class="container">
-	    <section id="svg">
+	    <section id="title">
 	            <h1>Assignment 3 Interactive Visualization</h1>
-
 	    </section>
+			<div id="info">
+							<p>Mouse over a point for more information</p>
+			</div>
+			<div id="svg">
+			</div>
 		</div>
+
 		<div id="sliderContainer">
 				<input id="timeslide" type="range" min="0" max="3" value = "0" step ="1"/><br>
 				<span id ="range">2015</span>
@@ -48,11 +53,11 @@
 				var inputValue = null;
 				var year = ["2015", "2016", "2017", "2018"];
 				
-				var svg = d3.select('body')
+				var svg = d3.select('#svg')
 				.append('svg')
 				.attr('width', width)
 				.attr('height', height)
-		
+
 				var g = svg.append('g');
 		
 				//set projection
@@ -73,11 +78,11 @@
 				.attr('fill', 'none')
 				.attr("stroke", "#696969")
 				.attr('d', geoPath);
-			
 				
 			//add data points
 			d3.csv("data/clean-data.csv", function (error, data) {
 				// change into number format
+
 				data.forEach(function (d) {
 					d.Latitude= +d.Latitude;
 					d.Longitude = +d.Longitude;
@@ -88,7 +93,7 @@
 			
 			function drawViz(data){
 				var incidents = svg.append("g");
-				
+
 				incidents.selectAll("path")
 				.data(data)
 				.enter()
@@ -99,16 +104,33 @@
 					var coords = projection([d.Longitude, d.Latitude])
 					return coords[0];
 				})
-				.attr("cy", function(d){ 
+				.attr("cy", function(d){
 					var coords = projection([d.Longitude, d.Latitude])
 					return coords[1];
 				})
+				.attr("fill", "#900")
+				.attr("stroke" , "#999")
+				.attr("d", geoPath)
+
+				// add mouse over event
+				.on("mouseover", function(d){
+
+					d3.select("p").html("<b>Block Location: </b>" + d["Hundred.Block.Location"] + "\n"
+						+ "<b>Zone/Beat: </b>" + d["Zone.Beat"] + "\n"
+					 	+ "<b>Group Description: </b>" + d["Event.Clearance.Description"] + "\n"
+						+ "<b>At Scene Date: </b>" + d["Date"] + "\n"
+						+ "<b>At Scene Time: </b>" + d["Time"]);
+					d3.select(this).attr("class","incident hover");
+				})
+				.on("mouseout", function(d){
+					d3.select("h2").html("");
+					d3.select(this).attr("class","incident");
+				})
+
 				//.attr("fill", "#5e81fd")
 				.attr("stroke" , "#3c3c3c")
 				.attr("d", geoPath)
-				.attr("class", "incident")
-				.on("mouseover", function(d){ d3.select(this).attr("class","incident hover");	})
-				.on("mouseout", function(d){ d3.select("h2").text("");d3.select(this).attr("class","incident");	});
+				.attr("class", "incident");
 			}
 
 			//create slider 
