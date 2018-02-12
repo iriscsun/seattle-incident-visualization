@@ -21,7 +21,9 @@
 	    <link rel="stylesheet" href="css/main.css" />
 
 	    <!-- main js file :) -->
-	    <script src="js/index.js"></script>
+		<script src="js/index.js"></script>
+		<script src="https://d3js.org/d3.v4.js"></script>
+    <script src = "data/neighborhoods.geojson"></script>
 	</head>
 
 	<body>
@@ -31,7 +33,49 @@
 
 	    </section>
 		</div>
-
+		<script>
+				d3.csv("seattle_police.csv", function (error, data) {
+		
+				// change string (from CSV) into number format
+					data.forEach(function (d) {
+						d.Latitude= +d.Latitude;
+						d.Longitude = +d.Longitude;
+					});
+					/*
+					
+					*/
+				});
+		
+		
+				var width = 700,
+				height = 580;
+		
+				var svg = d3.select('body')
+				.append('svg')
+				.attr('width', width)
+				.attr('height', height)
+		
+				var g = svg.append('g');
+		
+				var albersProjection = d3.geoAlbers()
+				.scale(120000)
+				.rotate([122.33, 0])
+				.center([0, 47.6062])
+				.translate([width/5, height/3]);
+		
+				var geoPath = d3.geoPath()
+				.projection(albersProjection);
+		
+				g.selectAll("path")
+				.data(neighborhoods_json.features)
+				.enter()
+				.append("path")
+				.attr('fill', '#ccc')
+				.attr("stroke", "#696969")
+				.attr('d', geoPath);
+		
+		
+			</script>
 	</body>
 
 </html>
