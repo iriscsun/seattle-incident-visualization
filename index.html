@@ -78,9 +78,11 @@
 				.data(data)
 				.enter()
 				.append("circle")
+				.attr("r", 3)
 				//.attr("transform", function(d) { return "translate(" + projection([d.Longitude, d.Latitude]) + ")"})
 				.attr("cx", function(d){ 
 					var coords = projection([d.Longitude, d.Latitude])
+					//return coords[0];
 					console.log(coords)
 					return coords[0];
 				})
