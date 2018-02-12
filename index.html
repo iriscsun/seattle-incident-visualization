@@ -69,18 +69,25 @@
 				data.forEach(function (d) {
 					d.Latitude= +d.Latitude;
 					d.Longitude = +d.Longitude;
-					
-					//change to positive value
-					d.Longitude = -(d.Longitude)
+					//console.log(d.Latitude, d.Longitude)
 				});
 				
 				var incidents = svg.append("g");
 				
-				incidents.selectAll("circle")
+				incidents.selectAll("path")
 				.data(data)
 				.enter()
 				.append("circle")
-				.attr("transform", function(d) { return "translate(" + projection([d.Longitude, d.Latitude]) + ")"})
+				//.attr("transform", function(d) { return "translate(" + projection([d.Longitude, d.Latitude]) + ")"})
+				.attr("cx", function(d){ 
+					var coords = projection([d.Longitude, d.Latitude])
+					console.log(coords)
+					return coords[0];
+				})
+				.attr("cy", function(d){ 
+					var coords = projection([d.Longitude, d.Latitude])
+					return coords[1];
+				})
 				.attr("fill", "#900")
 				.attr("stroke" , "#999")
 				.attr("d", geoPath);
