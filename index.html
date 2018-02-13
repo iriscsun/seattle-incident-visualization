@@ -72,6 +72,20 @@
 						</select>
 					</div>
 				</div>
+
+				<!--buttons-->
+				<div id="checkBoxContainer">
+						<label for="event">Event Type:</label>
+						<div id = "types"></div>
+							<input type="checkbox" class="myCheckbox" value="burglary"> Burglary</br>
+							<input type="checkbox" class="myCheckbox" value=="liquorviolation"> Liquor Violation</br>
+							<input type="checkbox" class="myCheckbox" value=="narcotics" checked> Narcotics</br>
+							<input type="checkbox" class="myCheckbox" value="assault"> Assault</br>
+							<input type="checkbox" class="myCheckbox" value="trespass" checked> Trespass </br>
+							<input type="checkbox" class="myCheckbox" value="arrest"> Arrest
+							
+						</div>
+					</div>
 			</div>
 		</div>
 
@@ -173,6 +187,10 @@
 				.attr("fill", dateMatch)
 				.attr("stroke", dateMatch2);
 			}
+
+			//CHECKBOXES
+			var groupDescription = ["BURGLARY","LIQUOR VIOLATIONS","NARCOTICS" ,"ASSAULT","TRESPASS","ARREST"];
+			
 
 			//match the year with the slider input
 			function dateMatch(data, value) {

@@ -45,6 +45,19 @@ p {
 		padding-top: 50px;
 }
 
+#checkBoxContainer{
+    position: relative;
+    width: 200px;
+    font-size: 1.0em;
+    font-weight: 200;
+    padding-top: 50px;
+    text-align: center;
+}
+.types{
+    font-size: 1.0em;
+    font-weight: 200;
+}
+
 #visualization {
     width: 710px;
     float: left;
