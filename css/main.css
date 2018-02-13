@@ -28,8 +28,20 @@ p {
     text-align: center;
     position: relative;
     width: 200px;
-    left: 300px;
-    top:20px;
+}
+
+#visualization {
+    width: 710px;
+    float: left;
+    border-top: 0;
+    text-align: center;
+    border-right: 0px;
+}
+
+#controls {
+    width: 276px;
+    height: 550px;
+    float: right;
 }
 
 #svg {
