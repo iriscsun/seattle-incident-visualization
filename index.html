@@ -29,21 +29,28 @@
 
 	<body>
 		<div class="container">
-	    <section id="title">
-	            <h1>Assignment 3 Interactive Visualization</h1>
-	    </section>
+			<section id="title">
+					<h1>Assignment 3 Interactive Visualization</h1>
+			</section>
+			
 			<div id="info">
-							<p>Mouse over a point for more information</p>
+				<p>Mouse over a point for more information</p>
 			</div>
-			<div id="svg">
+			<div id ="visualization">
+				<div id="svg"></div>
+			</div>
+
+		<div id="controls">
+				<div id="sliderContainer">
+					<label for="month">Month:</label>
+					<input id="timeslide" type="range" min="0" max="11" value = "0" step ="1"/><br>
+					<span id ="range">January</span>
+				</div>
+				
+				<!--put all interactions in here?? -->
 			</div>
 		</div>
 
-		<div id="sliderContainer">
-				<input id="timeslide" type="range" min="0" max="3" value = "0" step ="1"/><br>
-				<span id ="range">2015</span>
-			</div>
-		
 		
 		<script>
 				var width = 700,
@@ -51,7 +58,7 @@
 				var dataset;
 
 				var inputValue = null;
-				var year = ["2015", "2016", "2017", "2018"];
+				var month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 				
 				var svg = d3.select('#svg')
 				.append('svg')
@@ -99,6 +106,7 @@
 				.enter()
 				.append("circle")
 				.attr("fill", initialDate)
+				.attr("stroke", initialDate2)
 				.attr("r", 3)
 				.attr("cx", function(d){ 
 					var coords = projection([d.Longitude, d.Latitude])
@@ -108,8 +116,6 @@
 					var coords = projection([d.Longitude, d.Latitude])
 					return coords[1];
 				})
-				.attr("fill", "#900")
-				.attr("stroke" , "#999")
 				.attr("d", geoPath)
 
 				// add mouse over event
@@ -126,9 +132,6 @@
 					d3.select("h2").html("");
 					d3.select(this).attr("class","incident");
 				})
-
-				//.attr("fill", "#5e81fd")
-				.attr("stroke" , "#3c3c3c")
 				.attr("d", geoPath)
 				.attr("class", "incident");
 			}
@@ -140,8 +143,8 @@
 
 			// update the fill of each SVG of class "incident" with value
 			function update(value) {
-				document.getElementById("range").innerHTML=year[value];
-				inputValue = year[value];
+				document.getElementById("range").innerHTML=month[value];
+				inputValue = month[value];
 				d3.selectAll(".incident")
 				.attr("fill", dateMatch)
 				.attr("stroke", dateMatch2);
@@ -150,9 +153,9 @@
 			//match the year with the slider input
 			function dateMatch(data, value) {
 				var date = new Date(data.Date);
-				var Year = date.getFullYear();
-
-				if (inputValue == Year) {
+				var m = month[date.getMonth()];
+				
+				if (inputValue == m) {
 					this.parentElement.appendChild(this);
 					return "#5e81fd";
 				} else {
@@ -163,9 +166,9 @@
 			//remove other data points
 			function dateMatch2(data, value) {
 				var date = new Date(data.Date);
-				var Year = date.getFullYear();
+				var m = month[date.getMonth()];
 
-				if (inputValue == Year) {
+				if (inputValue == m) {
 					this.parentElement.appendChild(this);
 					return "#3c3c3c";
 				} else {
@@ -176,13 +179,24 @@
 			//initial viZ
 			function initialDate(d,i){
 				var date = new Date(d.Date);
-				var Year = date.getFullYear();
+				var m = month[date.getMonth()];
 
-				if (Year == "2015") {
+				if (m == "January") {
 					this.parentElement.appendChild(this);
 					return "#5e81fd";
 				} else {
-					return "#999";
+					return "none";
+				};
+			}
+			function initialDate2(d,i){
+				var date = new Date(d.Date);
+				var m = month[date.getMonth()];
+
+				if (m == "January") {
+					this.parentElement.appendChild(this);
+					return "#3c3c3c";
+				} else {
+					return "none";
 				};
 			}
 			</script>
