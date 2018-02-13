@@ -32,7 +32,7 @@
 			<section id="title">
 					<h1>Assignment 3 Interactive Visualization</h1>
 			</section>
-			
+
 			<div id="info">
 				<p>Mouse over a point for more information</p>
 			</div>
@@ -46,12 +46,36 @@
 					<input id="timeslide" type="range" min="0" max="11" value = "0" step ="1"/><br>
 					<span id ="range">January</span>
 				</div>
-				
+
 				<!--put all interactions in here?? -->
+				<div id="dropDownContainer">
+					<label for="crimeSector">Crime Location:</label>
+					<div id="crimeSector">
+						<select id="form-select">
+							<option value="b">Sector B</option>
+							<option value="c">Sector C</option>
+							<option value="d">Sector D</option>
+							<option value="e">Sector E</option>
+							<option value="f">Sector F</option>
+							<option value="g">Sector G</option>
+							<option value="j">Sector J</option>
+							<option value="k">Sector K</option>
+							<option value="l">Sector L</option>
+							<option value="m">Sector M</option>
+							<option value="n">Sector N</option>
+							<option value="o">Sector O</option>
+							<option value="q">Sector Q</option>
+							<option value="r">Sector R</option>
+							<option value="s">Sector S</option>
+							<option value="u">Sector U</option>
+							<option value="w">Sector W</option>
+						</select>
+					</div>
+				</div>
 			</div>
 		</div>
 
-		
+
 		<script>
 				var width = 700,
 				height = 580;
@@ -59,24 +83,24 @@
 
 				var inputValue = null;
 				var month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-				
+
 				var svg = d3.select('#svg')
 				.append('svg')
 				.attr('width', width)
 				.attr('height', height)
 
 				var g = svg.append('g');
-		
+
 				//set projection
 				var projection = d3.geoAlbers()
 				.scale(110000)
 				.rotate([122.33, 0])
 				.center([0, 47.6062])
 				.translate([width/2, height/2]);
-		
+
 				var geoPath = d3.geoPath()
 				.projection(projection);
-		
+
 				//set path
 				g.selectAll("path")
 				.data(neighborhoods_json.features)
@@ -85,7 +109,7 @@
 				.attr('fill', 'none')
 				.attr("stroke", "#696969")
 				.attr('d', geoPath);
-				
+
 			//add data points
 			d3.csv("data/clean-data.csv", function (error, data) {
 				// change into number format
@@ -97,7 +121,7 @@
 				dataset = data
 				drawViz(dataset);
 			});
-			
+
 			function drawViz(data){
 				var incidents = svg.append("g");
 
@@ -108,7 +132,7 @@
 				.attr("fill", initialDate)
 				.attr("stroke", initialDate2)
 				.attr("r", 3)
-				.attr("cx", function(d){ 
+				.attr("cx", function(d){
 					var coords = projection([d.Longitude, d.Latitude])
 					return coords[0];
 				})
@@ -136,7 +160,7 @@
 				.attr("class", "incident");
 			}
 
-			//create slider 
+			//create slider
 			d3.select("#timeslide").on("input", function() {
 				update(+this.value);
 			});
@@ -149,12 +173,12 @@
 				.attr("fill", dateMatch)
 				.attr("stroke", dateMatch2);
 			}
-			
+
 			//match the year with the slider input
 			function dateMatch(data, value) {
 				var date = new Date(data.Date);
 				var m = month[date.getMonth()];
-				
+
 				if (inputValue == m) {
 					this.parentElement.appendChild(this);
 					return "#5e81fd";
@@ -200,8 +224,8 @@
 				};
 			}
 			</script>
-			
-			
+
+
 
 	</body>
 
