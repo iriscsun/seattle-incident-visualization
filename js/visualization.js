@@ -46,6 +46,7 @@ $(function () {
             d.Longitude = +d.Longitude;
             group = d["Event.Clearance.Group"];
             date = d["Date"];
+            sector = d["District.Sector"]
         });
 
 
@@ -96,26 +97,31 @@ $(function () {
             console.log("finished drawing")
         }
     
-    var groupDescription = ["burglary", "liquor violations", "narcotics complaints", "assault", "trespass", "arrest"];
- 
     //create slider
     d3.select("#timeslide").on("input", function () {
-        update(+this.value);
+        updateMonth(+this.value);
     });
-    d3.selectAll(".myCheckbox").on("change", updateCheck)
+    d3.selectAll(".myCheckbox").on("change", update)
 
+    d3.select("#form-select").on('change', function() {
+        filterType(this.value);
+    });
+    
+   
     
     var currentMonth = "January";
+    var currentSector = null;
 
-    function updateMonth(value){
-        var date = new Date(d.Date);
-        var m = month[date.getMonth()]; 
-        
-        currentMonth = m;
-    }
     var newData;
     var choices = [];
-    function updateCheck(){
+
+    function filterType(mytype) {
+        console.log(mytype)
+        currentSector = mytype.toUpperCase();
+        update();
+
+    }
+    function update(){
         
         d3.selectAll(".myCheckbox").each(function(d){
           cb = d3.select(this);
@@ -123,12 +129,12 @@ $(function () {
             choices.push(cb.property("value"));
           }
         });
-        console.log(choices)
+        
         if(choices.length > 0){
             //filter for clearance group
             newData = dataset.filter(function(d){ 
-            var type = d["Event.Clearance.Group"].toLowerCase()//.substr(0,d["Event.Clearance.Group"].indexOf(' '));
-            return choices.includes(type);
+            var type = d[ "Event.Clearance.Group" ].toLowerCase()//.substr(0,d["Event.Clearance.Group"].indexOf(' '));
+            return choices.includes( type );
             
             });
             
@@ -139,8 +145,15 @@ $(function () {
                 return currentMonth.includes(m);
             })
            
-            }else {
+            newData = newData.filter(function(d){
+                return d["District.Sector"].includes(currentSector);
+            })
+            } else {
                 newData = dataset;    
+                newData = newData.filter(function(d){
+                    //console.log(d[District.Sector])
+                    return d["District.Sector"].includes(currentSector);
+                })
                 newData = newData.filter(function(d){
                     var date = new Date(d.Date);
                     var m = month[date.getMonth()]; 
@@ -148,20 +161,20 @@ $(function () {
                     return currentMonth.includes(m); 
                 })
             } 
-
+            console.log(newData)
         drawViz(newData);
         
     }
     // update the fill of each SVG of class "incident" with value
-    function update(value) {
+    function updateMonth(value) {
         document.getElementById("range").innerHTML = month[value];
     
         var target = month[value];
         //console.log(target);
         currentMonth = target;
-        updateCheck();
+        update();
         //console.log(currentMonth);
-        //updateCheck();
+        //update();
         
        
         //console.log(newData);
