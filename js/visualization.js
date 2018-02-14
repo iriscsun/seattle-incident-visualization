@@ -50,7 +50,7 @@ $(function () {
 
 
         dataset = data
-        drawViz(dataset);
+        initialState();
     });
 
     function drawViz(data) {
@@ -104,18 +104,11 @@ $(function () {
         filterType(this.value);
     });
     
-    function filterType(mytype) {
-        console.log(mytype)
-        var ndata = dataset.filter(function(d) {
-            return d["District.Sector"] == (mytype.toUpperCase());
-        });
-       // drawViz(ndata);
-        //console.log(ndata);
-
-    }
+   
     
     var currentMonth = "January";
-    var currentSector = "B";
+    var currentSector = "ALL";
+
     function updateMonth(value){
         var date = new Date(d.Date);
         var m = month[date.getMonth()]; 
@@ -132,10 +125,19 @@ $(function () {
     function filterType(mytype) {
         console.log(mytype)
         currentSector = mytype.toUpperCase();
+        console.log(currentSector)
         updateCheck();
-       // drawViz(ndata);
-        //console.log(ndata);
 
+    }
+    function initialState(){
+            newData = dataset.filter(function(d){
+                var date = new Date(d.Date);
+                var m = month[date.getMonth()]; 
+
+                return currentMonth.includes(m); 
+            }); 
+            drawViz(newData)
+        
     }
     function updateCheck(){
         var choices = [];
@@ -147,35 +149,62 @@ $(function () {
         });
         console.log(choices)
 
-        if(choices.length > 0){
-            //filter for clearance group
-            newData = dataset.filter(function(d){return choices.includes(d["Event.Clearance.Group"].toLowerCase());
-            });
-
-            newData = newData.filter(function(d){
-                 var date = new Date(d.Date);
+        
+            if(currentSector == "ALL" && choices.length < 0){
+                console.log("current sector is null!")
+                newData = dataset.filter(function(d){
+                var date = new Date(d.Date);
                 var m = month[date.getMonth()]; 
 
+                //console.log(newData)
                 return currentMonth.includes(m);
-            })
+                });
+            }else if(currentSector == "ALL" && choices.length > 0){
+                console.log("current sector is runnig both sector and choices!")
+                newData = dataset.filter(function(d){return choices.includes(d["Event.Clearance.Group"].toLowerCase());
+                });
 
-            newData = newData.filter(function(d){
-                return currentSector.includes(d["District.Sector"]); 
-            });
-            }else {
-                newData = dataset; 
+                newData = newData.filter(function(d){
+                var date = new Date(d.Date);
+                var m = month[date.getMonth()]; 
+
+                //console.log(newData)
+                return currentMonth.includes(m);
+                })
+                
+            }
+            else if(choices.length > 0){
+                console.log("checkmarks checked")
+                //filter for clearance group
+                newData = dataset.filter(function(d){return choices.includes(d["Event.Clearance.Group"].toLowerCase());
+                });
+
                 newData = newData.filter(function(d){
                     var date = new Date(d.Date);
                     var m = month[date.getMonth()]; 
-    
-                    return currentMonth.includes(m); 
-                });    
 
-                //filter for sector
-                newData = newData.filter(function(d){
-                    return currentSector.includes(d["District.Sector"]); 
+                    return currentMonth.includes(m);
+                })
+                console.log(currentSector)
+                newData = newData.filter(function(d){return currentSector.includes(d["District.Sector"]);
                 });
+            }
+            else {
+                console.log(currentSector);
+                console.log("running the final else")
+                console.log(dataset)
+                //filter new month
+                if(currentMonth != "All"){
+                    newData = dataset.filter(function(d){
+                        var date = new Date(d.Date);
+                        var m = month[date.getMonth()]; 
+        
+                        return currentMonth.includes(m); 
+                    });    
+                }
               } 
+
+        console.log(newData)
         drawViz(newData);
         
     }
