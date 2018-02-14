@@ -103,9 +103,10 @@ $(function () {
         update(+this.value);
     });
     d3.selectAll(".myCheckbox").on("change", updateCheck)
-    updateCheck();
+
     
     var currentMonth = "January";
+
     function updateMonth(value){
         var date = new Date(d.Date);
         var m = month[date.getMonth()]; 
@@ -113,9 +114,9 @@ $(function () {
         currentMonth = m;
     }
     var newData;
-
+    var choices = [];
     function updateCheck(){
-        var choices = [];
+        
         d3.selectAll(".myCheckbox").each(function(d){
           cb = d3.select(this);
           if(cb.property("checked")){
@@ -123,25 +124,26 @@ $(function () {
           }
         });
         console.log(choices)
-
-        console.log(dataset)
         if(choices.length > 0){
             //filter for clearance group
-            newData = dataset.filter(function(d){return choices.includes(d["Event.Clearance.Group"].toLowerCase());
-        
+            newData = dataset.filter(function(d){ 
+            var type = d["Event.Clearance.Group"].toLowerCase()//.substr(0,d["Event.Clearance.Group"].indexOf(' '));
+            return choices.includes(type);
+            
             });
-
+            
             newData = newData.filter(function(d){
-                 var date = new Date(d.Date);
+                var date = new Date(d.Date);
                 var m = month[date.getMonth()]; 
-                //console.log(currentMonth)
-                //console.log(m)
+
                 return currentMonth.includes(m);
             })
            
             }else {
                 newData = dataset;     
               } 
+
+        console.log(newData)
         drawViz(newData);
         
     }
@@ -167,54 +169,50 @@ $(function () {
 
     //CHECKBOXES
     //match the year with the slider input
-    function dateMatch(data, value) {
-        var date = new Date(data.Date);
-        var m = month[date.getMonth()];
+    // function dateMatch(data, value) {
+    //     var date = new Date(data.Date);
+    //     var m = month[date.getMonth()];
 
-        if (inputValue == m) {
-            this.parentElement.appendChild(this);
-            return "#5e81fd";
-        } else {
-            return "none";
-        };
+    //     if (inputValue == m) {
+    //         this.parentElement.appendChild(this);
+    //         return "#5e81fd";
+    //     } else {
+    //         return "none";
+    //     };
+    // }
+
+    // //remove other data points
+    // function dateMatch2(data, value) {
+    //     var date = new Date(data.Date);
+    //     var m = month[date.getMonth()];
+
+    //     if (inputValue == m) {
+    //         this.parentElement.appendChild(this);
+    //         return "#3c3c3c";
+    //     } else {
+    //         return "none";
+    //     };
+    // }
+
+    // //initial viZ
+    // function initialDate(d, i) {
+    //     var date = new Date(d.Date);
+    //     var m = month[date.getMonth()];
+
+    //     if (m == "January") {
+    //         this.parentElement.appendChild(this);
+    //         return "#5e81fd";
+    //     } else {
+    //         return "none";
+    //     };
+    // }
+   
+    //uncheck all
+    var checkboxes = document.getElementsByTagName('input');
+
+    for (var i=0; i<checkboxes.length; i++)  {
+        if (checkboxes[i].type == 'checkbox')   {
+            checkboxes[i].checked = false;
+        }
     }
-
-    //remove other data points
-    function dateMatch2(data, value) {
-        var date = new Date(data.Date);
-        var m = month[date.getMonth()];
-
-        if (inputValue == m) {
-            this.parentElement.appendChild(this);
-            return "#3c3c3c";
-        } else {
-            return "none";
-        };
-    }
-
-    //initial viZ
-    function initialDate(d, i) {
-        var date = new Date(d.Date);
-        var m = month[date.getMonth()];
-
-        if (m == "January") {
-            this.parentElement.appendChild(this);
-            return "#5e81fd";
-        } else {
-            return "none";
-        };
-    }
-    function initialDate2(d, i) {
-        var date = new Date(d.Date);
-        var m = month[date.getMonth()];
-
-        if (m == "January") {
-            this.parentElement.appendChild(this);
-            return "#3c3c3c";
-        } else {
-            return "3c3c3c";
-        };
-        
-    }
-    
 });
