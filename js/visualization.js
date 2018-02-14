@@ -46,7 +46,6 @@ $(function () {
             d.Longitude = +d.Longitude;
             group = d["Event.Clearance.Group"];
             date = d["Date"];
-            sector = d["District.Sector"]
         });
 
 
@@ -91,139 +90,105 @@ $(function () {
             })
             .attr("d", geoPath);
 
-
-
             circle.exit().remove();
             console.log("finished drawing")
         }
     
     //create slider
     d3.select("#timeslide").on("input", function () {
-        updateMonth(+this.value);
+        update(+this.value);
     });
-    d3.selectAll(".myCheckbox").on("change", update)
+    d3.selectAll(".myCheckbox").on("change", updateCheck)
 
     d3.select("#form-select").on('change', function() {
         filterType(this.value);
     });
     
-   
+    function filterType(mytype) {
+        console.log(mytype)
+        var ndata = dataset.filter(function(d) {
+            return d["District.Sector"] == (mytype.toUpperCase());
+        });
+       // drawViz(ndata);
+        //console.log(ndata);
+
+    }
     
     var currentMonth = "January";
-    var currentSector = null;
-
+    var currentSector = "B";
+    function updateMonth(value){
+        var date = new Date(d.Date);
+        var m = month[date.getMonth()]; 
+        
+        currentMonth = m;
+    }
     var newData;
     var choices = [];
 
+    d3.select("#form-select").on('change', function() {
+        filterType(this.value);
+    });
+    
     function filterType(mytype) {
         console.log(mytype)
         currentSector = mytype.toUpperCase();
-        update();
+        updateCheck();
+       // drawViz(ndata);
+        //console.log(ndata);
 
     }
-    function update(){
-        
+    function updateCheck(){
+        var choices = [];
         d3.selectAll(".myCheckbox").each(function(d){
           cb = d3.select(this);
           if(cb.property("checked")){
             choices.push(cb.property("value"));
           }
         });
-        
+        console.log(choices)
+
         if(choices.length > 0){
             //filter for clearance group
-            newData = dataset.filter(function(d){ 
-            var type = d[ "Event.Clearance.Group" ].toLowerCase()//.substr(0,d["Event.Clearance.Group"].indexOf(' '));
-            return choices.includes( type );
-            
+            newData = dataset.filter(function(d){return choices.includes(d["Event.Clearance.Group"].toLowerCase());
             });
-            
+
             newData = newData.filter(function(d){
-                var date = new Date(d.Date);
+                 var date = new Date(d.Date);
                 var m = month[date.getMonth()]; 
 
                 return currentMonth.includes(m);
             })
-           
+
             newData = newData.filter(function(d){
-                return d["District.Sector"].includes(currentSector);
-            })
-            } else {
-                newData = dataset;    
-                newData = newData.filter(function(d){
-                    //console.log(d[District.Sector])
-                    return d["District.Sector"].includes(currentSector);
-                })
+                return currentSector.includes(d["District.Sector"]); 
+            });
+            }else {
+                newData = dataset; 
                 newData = newData.filter(function(d){
                     var date = new Date(d.Date);
                     var m = month[date.getMonth()]; 
     
                     return currentMonth.includes(m); 
-                })
-            } 
-            console.log(newData)
+                });    
+
+                //filter for sector
+                newData = newData.filter(function(d){
+                    return currentSector.includes(d["District.Sector"]); 
+                });
+              } 
         drawViz(newData);
         
     }
     // update the fill of each SVG of class "incident" with value
-    function updateMonth(value) {
+    function update(value) {
         document.getElementById("range").innerHTML = month[value];
     
         var target = month[value];
-        //console.log(target);
+
         currentMonth = target;
-        update();
-        //console.log(currentMonth);
-        //update();
-        
-       
-        //console.log(newData);
-        //drawViz(newData);
-        //  d3.selectAll(".incident")
-        //      .attr("fill", dateMatch)
-        //      .attr("stroke", dateMatch2);
+        updateCheck();
+
     }
-
-
-    //CHECKBOXES
-    //match the year with the slider input
-    function dateMatch(data, value) {
-        var date = new Date(data.Date);
-        var m = month[date.getMonth()];
-
-        if (inputValue == m) {
-            this.parentElement.appendChild(this);
-            return "#5e81fd";
-        } else {
-            return "none";
-        };
-    }
-
-    // //remove other data points
-    // function dateMatch2(data, value) {
-    //     var date = new Date(data.Date);
-    //     var m = month[date.getMonth()];
-
-    //     if (inputValue == m) {
-    //         this.parentElement.appendChild(this);
-    //         return "#3c3c3c";
-    //     } else {
-    //         return "none";
-    //     };
-    // }
-
-    // //initial viZ
-    // function initialDate(d, i) {
-    //     var date = new Date(d.Date);
-    //     var m = month[date.getMonth()];
-
-    //     if (m == "January") {
-    //         this.parentElement.appendChild(this);
-    //         return "#5e81fd";
-    //     } else {
-    //         return "none";
-    //     };
-    // }
    
     //uncheck all
     var checkboxes = document.getElementsByTagName('input');
