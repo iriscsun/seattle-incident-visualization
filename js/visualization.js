@@ -140,10 +140,15 @@ $(function () {
             })
            
             }else {
-                newData = dataset;     
-              } 
+                newData = dataset;    
+                newData = newData.filter(function(d){
+                    var date = new Date(d.Date);
+                    var m = month[date.getMonth()]; 
+    
+                    return currentMonth.includes(m); 
+                })
+            } 
 
-        console.log(newData)
         drawViz(newData);
         
     }
@@ -169,17 +174,17 @@ $(function () {
 
     //CHECKBOXES
     //match the year with the slider input
-    // function dateMatch(data, value) {
-    //     var date = new Date(data.Date);
-    //     var m = month[date.getMonth()];
+    function dateMatch(data, value) {
+        var date = new Date(data.Date);
+        var m = month[date.getMonth()];
 
-    //     if (inputValue == m) {
-    //         this.parentElement.appendChild(this);
-    //         return "#5e81fd";
-    //     } else {
-    //         return "none";
-    //     };
-    // }
+        if (inputValue == m) {
+            this.parentElement.appendChild(this);
+            return "#5e81fd";
+        } else {
+            return "none";
+        };
+    }
 
     // //remove other data points
     // function dateMatch2(data, value) {
