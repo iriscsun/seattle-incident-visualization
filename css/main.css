@@ -32,26 +32,25 @@ p {
 }
 
 #count {
-	text-align: center;
-	position: relative;
+	display:inline-block;
 	width: 200px;
 	font-size: 1.0em;
 	font-weight: 200;
+	padding-bottom: 20px;
+	padding-top:20px;
 }
 
 
 /* ADD CSS FOR #sliderContainer */
 #sliderContainer {
-    text-align: center;
-    position: relative;
+	display:inline-block;
     width: 200px;
     font-size: 1.0em;
     font-weight: 200;
 }
 
 #dropDownContainer {
-    text-align: center;
-    position: relative;
+	display:inline-block;
     width: 200px;
     font-size: 1.0em;
     font-weight: 200;
@@ -59,12 +58,12 @@ p {
 }
 
 #checkBoxContainer{
-    position: relative;
+	display:inline-block;
     width: 200px;
     font-size: 1.0em;
     font-weight: 200;
     padding-top: 50px;
-    text-align: center;
+		padding-bottom: 40px;
 }
 
 .types{
@@ -81,10 +80,13 @@ p {
 }
 
 #controls {
-    width: 276px;
-    height: 550px;
-    float: right;
-
+	text-align: center;
+	width: 400px;
+	font-size: 1.0em;
+	font-weight: 200;
+	display: inline-block;
+	border: 1px solid gray;
+	margin-left: 20px;
 }
 
 #svg {

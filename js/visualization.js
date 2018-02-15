@@ -6,7 +6,7 @@ beBoundless();
 
 $(function () {
 
-    var width = 700,
+    var width = 650,
         height = 580;
     var dataset;
 
@@ -22,10 +22,10 @@ $(function () {
 
     //set projection
     var projection = d3.geoAlbers()
-        .scale(110000)
+        .scale(130000)
         .rotate([122.33, 0])
-        .center([0, 47.6062])
-        .translate([width / 2, height / 2]);
+        .center([0, 47.6180])
+        .translate([width / 2.2, height / 2]);
 
     var geoPath = d3.geoPath()
         .projection(projection);
