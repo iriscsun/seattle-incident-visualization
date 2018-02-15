@@ -123,7 +123,6 @@ $(function () {
     });
     
     function filterType(mytype) {
-        console.log(mytype)
         currentSector = mytype.toUpperCase();
         console.log(currentSector)
         updateCheck();
@@ -147,16 +146,13 @@ $(function () {
             choices.push(cb.property("value"));
           }
         });
-        console.log(choices)
-
-        
+        //console.log(choices)
             if(currentSector == "ALL" && choices.length < 0){
                 console.log("current sector is null!")
                 newData = dataset.filter(function(d){
                 var date = new Date(d.Date);
                 var m = month[date.getMonth()]; 
 
-                //console.log(newData)
                 return currentMonth.includes(m);
                 });
             }else if(currentSector == "ALL" && choices.length > 0){
@@ -168,10 +164,44 @@ $(function () {
                 var date = new Date(d.Date);
                 var m = month[date.getMonth()]; 
 
-                //console.log(newData)
                 return currentMonth.includes(m);
                 })
                 
+            }else if(currentSector != "ALL"){
+                newData = dataset;
+                console.log("choosing a sector")
+                
+                //draw month
+                newData = newData.filter(function(d){
+                    var date = new Date(d.Date);
+                    var m = month[date.getMonth()]; 
+
+                    return currentMonth.includes(m);
+                })
+                
+                //draw sector
+                newData = newData.filter(function(d){console.log(d["District.Sector"] + currentSector);return currentSector.includes(d["District.Sector"]);
+                });
+
+                if(choices.length > 0){
+                    newData = newData.filter(function(d){return choices.includes(d["Event.Clearance.Group"].toLowerCase());
+                    });
+                }
+            }else if (currentSector != "ALL" && choices.length >0){
+                console.log("SELECTED SECTOR AND MORE CHECKBOXES")
+             
+                newData = dataset.filter(function(d){return choices.includes(d["Event.Clearance.Group"].toLowerCase());
+                });
+
+                newData = newData.filter(function(d){
+                    var date = new Date(d.Date);
+                    var m = month[date.getMonth()]; 
+
+                    return currentMonth.includes(m);
+                })
+
+                newData = newData.filter(function(d){return currentSector.includes(d["District.Sector"]);
+                });
             }
             else if(choices.length > 0){
                 console.log("checkmarks checked")
@@ -185,12 +215,12 @@ $(function () {
 
                     return currentMonth.includes(m);
                 })
-                console.log(currentSector)
+
                 newData = newData.filter(function(d){return currentSector.includes(d["District.Sector"]);
                 });
             }
             else {
-                console.log(currentSector);
+                console.log(choices.length);
                 console.log("running the final else")
                 console.log(dataset)
                 //filter new month
@@ -204,7 +234,6 @@ $(function () {
                 }
               } 
 
-        console.log(newData)
         drawViz(newData);
         
     }
