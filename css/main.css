@@ -11,6 +11,7 @@ h1, h2 {
 h2 {
     top: 30px;
     font-size: 1em;
+		font-weight: 500;
 }
 
 p {
@@ -21,12 +22,24 @@ p {
 
 #info {
 	height: 115px;
+	/*display: inline-block;*/
 }
 
 /* REMOVE .incident FILL CSS */
 .hover {
-    fill: yellow;
+    fill: black;
+		opacity: .9;
 }
+
+#count {
+	text-align: center;
+	position: relative;
+	width: 200px;
+	font-size: 1.0em;
+	font-weight: 200;
+}
+
+
 /* ADD CSS FOR #sliderContainer */
 #sliderContainer {
     text-align: center;
@@ -53,6 +66,7 @@ p {
     padding-top: 50px;
     text-align: center;
 }
+
 .types{
     font-size: 1.0em;
     font-weight: 200;

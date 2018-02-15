@@ -48,7 +48,6 @@ $(function () {
             date = d["Date"];
         });
 
-
         dataset = data
         initialState();
     });
@@ -73,8 +72,10 @@ $(function () {
             })
             .attr("r", 3)
             .attr("d", geoPath)
-            .attr("fill", "#5e81fd")
-            .attr("stroke", "#3c3c3c")
+            .attr("fill", "#E15759")
+						.attr("stroke", "#910000")
+						.attr("opacity", '0.3')
+						.attr("stroke-opacity",'0.1')
             //mouse over event
             .on("mouseover", function (d) {
                 d3.select("p").html("<b>Block Location: </b>" + d["Hundred.Block.Location"] + "\n"
@@ -85,15 +86,16 @@ $(function () {
                 d3.select(this).attr("class", "incident hover");
             })
             .on("mouseout", function (d) {
-                d3.select("h2").html("");
                 d3.select(this).attr("class", "incident");
             })
             .attr("d", geoPath);
 
             circle.exit().remove();
+
+						document.getElementById("crime-count").innerHTML = data.length;
             console.log("finished drawing")
         }
-    
+
     //create slider
     d3.select("#timeslide").on("input", function () {
         update(+this.value);
@@ -103,16 +105,14 @@ $(function () {
     d3.select("#form-select").on('change', function() {
         filterType(this.value);
     });
-    
-   
-    
+
     var currentMonth = "January";
     var currentSector = "ALL";
 
     function updateMonth(value){
         var date = new Date(d.Date);
-        var m = month[date.getMonth()]; 
-        
+        var m = month[date.getMonth()];
+
         currentMonth = m;
     }
     var newData;
@@ -121,7 +121,7 @@ $(function () {
     d3.select("#form-select").on('change', function() {
         filterType(this.value);
     });
-    
+
     function filterType(mytype) {
         currentSector = mytype.toUpperCase();
         console.log(currentSector)
@@ -131,13 +131,15 @@ $(function () {
     function initialState(){
             newData = dataset.filter(function(d){
                 var date = new Date(d.Date);
-                var m = month[date.getMonth()]; 
+                var m = month[date.getMonth()];
 
-                return currentMonth.includes(m); 
-            }); 
+                return currentMonth.includes(m);
+            });
             drawViz(newData)
-        
+
     }
+
+		//handles any filter event to redraw visualization
     function updateCheck(){
         var choices = [];
         d3.selectAll(".myCheckbox").each(function(d){
@@ -151,7 +153,7 @@ $(function () {
                 console.log("current sector is null!")
                 newData = dataset.filter(function(d){
                 var date = new Date(d.Date);
-                var m = month[date.getMonth()]; 
+                var m = month[date.getMonth()];
 
                 return currentMonth.includes(m);
                 });
@@ -159,27 +161,27 @@ $(function () {
                 console.log("current sector is runnig both sector and choices!")
                 newData = dataset.filter(function(d){return choices.includes(d["Event.Clearance.Group"].toLowerCase());
                 });
-     
+
 
                 newData = newData.filter(function(d){
                 var date = new Date(d.Date);
-                var m = month[date.getMonth()]; 
+                var m = month[date.getMonth()];
 
                 return currentMonth.includes(m);
                 })
-                
+
             }else if(currentSector != "ALL"){
                 newData = dataset;
                 console.log("choosing a sector")
-                
+
                 //draw month
                 newData = newData.filter(function(d){
                     var date = new Date(d.Date);
-                    var m = month[date.getMonth()]; 
+                    var m = month[date.getMonth()];
 
                     return currentMonth.includes(m);
                 })
-                
+
                 //draw sector
                 newData = newData.filter(function(d){console.log(d["District.Sector"] + currentSector);return currentSector.includes(d["District.Sector"]);
                 });
@@ -190,13 +192,13 @@ $(function () {
                 }
             }else if (currentSector != "ALL" && choices.length >0){
                 console.log("SELECTED SECTOR AND MORE CHECKBOXES")
-             
+
                 newData = dataset.filter(function(d){return choices.includes(d["Event.Clearance.Group"].toLowerCase());
                 });
 
                 newData = newData.filter(function(d){
                     var date = new Date(d.Date);
-                    var m = month[date.getMonth()]; 
+                    var m = month[date.getMonth()];
 
                     return currentMonth.includes(m);
                 })
@@ -212,20 +214,20 @@ $(function () {
                 if(currentMonth != "All"){
                     newData = dataset.filter(function(d){
                         var date = new Date(d.Date);
-                        var m = month[date.getMonth()]; 
-        
-                        return currentMonth.includes(m); 
-                    });    
+                        var m = month[date.getMonth()];
+
+                        return currentMonth.includes(m);
+                    });
                 }
-              } 
+              }
 
         drawViz(newData);
-        
+
     }
     // update the fill of each SVG of class "incident" with value
     function update(value) {
         document.getElementById("range").innerHTML = month[value];
-    
+
         var target = month[value];
 
         currentMonth = target;
