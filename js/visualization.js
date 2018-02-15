@@ -146,7 +146,7 @@ $(function () {
             choices.push(cb.property("value"));
           }
         });
-        //console.log(choices)
+
             if(currentSector == "ALL" && choices.length < 0){
                 console.log("current sector is null!")
                 newData = dataset.filter(function(d){
@@ -159,6 +159,7 @@ $(function () {
                 console.log("current sector is runnig both sector and choices!")
                 newData = dataset.filter(function(d){return choices.includes(d["Event.Clearance.Group"].toLowerCase());
                 });
+     
 
                 newData = newData.filter(function(d){
                 var date = new Date(d.Date);
@@ -203,22 +204,6 @@ $(function () {
                 newData = newData.filter(function(d){return currentSector.includes(d["District.Sector"]);
                 });
             }
-            else if(choices.length > 0){
-                console.log("checkmarks checked")
-                //filter for clearance group
-                newData = dataset.filter(function(d){return choices.includes(d["Event.Clearance.Group"].toLowerCase());
-                });
-
-                newData = newData.filter(function(d){
-                    var date = new Date(d.Date);
-                    var m = month[date.getMonth()]; 
-
-                    return currentMonth.includes(m);
-                })
-
-                newData = newData.filter(function(d){return currentSector.includes(d["District.Sector"]);
-                });
-            }
             else {
                 console.log(choices.length);
                 console.log("running the final else")
@@ -247,7 +232,7 @@ $(function () {
         updateCheck();
 
     }
-   
+
     //uncheck all
     var checkboxes = document.getElementsByTagName('input');
 
