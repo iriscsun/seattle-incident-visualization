@@ -11,6 +11,8 @@ $(function () {
     var dataset;
 
     var inputValue = null;
+		// var color1 = "#4286f4"
+		// var color3 = "#8e009b"
     var month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
     var svg = d3.select('#svg')
@@ -52,7 +54,7 @@ $(function () {
         initialState();
     });
 
-    function drawViz(data) {
+    function drawViz(data, color) {
         var incidents = svg.append("g");
         d3.selectAll("circle").remove();
         circle = incidents.selectAll("circle")
@@ -72,9 +74,22 @@ $(function () {
             })
             .attr("r", 3)
             .attr("d", geoPath)
-            .attr("fill", "#E15759")
+            .attr("fill", function(d) {
+							console.log(d);
+							if (d["Event.Clearance.Group"] == "BURGLARY") {
+								return "#d7191c"
+							} else if (d["Event.Clearance.Group"] == "LIQUOR VIOLATIONS") {
+								return "#7b3294"
+							} else if (d["Event.Clearance.Group"] == "ASSAULTS"){
+								return "#dfc27d"
+							} else if (d["Event.Clearance.Group"] == "TRESPASS") {
+								return "#008837"
+							} else {
+								return "#2b83ba"
+							}
+						})
 						.attr("stroke", "#910000")
-						.attr("opacity", '0.3')
+						.attr("opacity", '0.35')
 						.attr("stroke-opacity",'0.1')
             //mouse over event
             .on("mouseover", function (d) {
