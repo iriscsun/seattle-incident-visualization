@@ -38,7 +38,7 @@ $(function () {
         .enter()
         .append("path")
         .attr('fill', 'none')
-        .attr("stroke", "#696969")
+        .attr("stroke", "#b7b7b7")
         .attr('d', geoPath);
 
     //add data points
@@ -84,12 +84,14 @@ $(function () {
 								return "#dfc27d"
 							} else if (d["Event.Clearance.Group"] == "TRESPASS") {
 								return "#008837"
+							} else if (d["Event.Clearance.Group"] == "ARREST") {
+								return "#f442f1"
 							} else {
-								return "#2b83ba"
+								return "#009dff"
 							}
 						})
 						.attr("stroke", "#910000")
-						.attr("opacity", '0.35')
+						.attr("opacity", '0.5')
 						.attr("stroke-opacity",'0.1')
             //mouse over event
             .on("mouseover", function (d) {
