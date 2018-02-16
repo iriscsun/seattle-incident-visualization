@@ -1,12 +1,20 @@
-body{
+html, body{
  background-color: #ECF2F7;
+ /*background-color: #A6AAC6;
+ background-image: linear-gradient(to bottom,#A6AAC6, #8397B9);*/
+ background-image: linear-gradient(to bottom,#ECF2F7, #9DA6C4);
+ height: 100%;
+background-size: cover;
+ 
 }
 
 h1, h2 {
     left: 10px;
     font-size: 2.0em;
     font-weight: 300;
-		color: #6b6b6b;
+    color: #6b6b6b;
+    /*color:white;*/
+        
 
 }
 h2 {
@@ -19,11 +27,18 @@ p {
     white-space: pre;
     font-size: 1.0em;
     font-weight: 200;
-		color: #6b6b6b;
+	color: #6b6b6b;
 }
 
 #info {
-	height: 115px;
+    height: 115px;
+    width: auto;
+    box-shadow: 1px 1px 5px #4E546C;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 25px;
+    margin-bottom: 20px;
+    padding-top: 10px;
+    padding-left: 15px;
 	/*display: inline-block;*/
 }
 
@@ -74,6 +89,7 @@ p {
 }
 
 #visualization {
+    border-radius: 25px;
     width: 710px;
     float: left;
     border-top: 0;
@@ -84,14 +100,15 @@ p {
 }
 
 #controls {
+    border-radius: 25px;
 	text-align: center;
 	width: 400px;
 	font-size: 1.0em;
 	font-weight: 200;
 	display: inline-block;
-	margin-left: 20px;
+    margin-left: 20px;
 	box-shadow: 1px 1px 5px #4E546C;
-	background-color: rgba(255, 255, 255, 0.5);
+	background-color: rgba(255, 255, 255, 0.9);
 }
 
 #svg {

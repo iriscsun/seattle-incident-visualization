@@ -38,7 +38,7 @@ $(function () {
         .enter()
         .append("path")
         .attr('fill', 'none')
-        .attr("stroke", "#b7b7b7")
+        .attr("stroke", "#4E546C")
         .attr('d', geoPath);
 
     //add data points
@@ -75,7 +75,7 @@ $(function () {
             .attr("r", 3)
             .attr("d", geoPath)
             .attr("fill", function(d) {
-							console.log(d);
+							//console.log(d);
 							if (d["Event.Clearance.Group"] == "BURGLARY") {
 								return "#d7191c"
 							} else if (d["Event.Clearance.Group"] == "LIQUOR VIOLATIONS") {
